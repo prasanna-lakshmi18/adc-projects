@@ -1,0 +1,95 @@
+#Data collection and cleaning
+import pandas as pd
+
+# Load medical data from a CSV file
+data = pd.read_csv('medical_data.csv')
+
+# Handle missing values
+data.fillna(data.mean(), inplace=True)
+
+# Remove outliers
+data = data[(np.abs(stats.zscore(data)) < 3).all(axis=1)]
+
+# Perform data normalization
+from sklearn.preprocessing import StandardScaler
+scaler = StandardScaler()
+data[['column1', 'column2', ...]] = scaler.fit_transform(data[['column1', 'column2', ...]])
+
+
+
+
+#Exploratory Data Analysis
+
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Visualize patient demographics
+sns.countplot(x='age', data=data)
+plt.show()
+
+# Visualize medical conditions
+sns.countplot(x='condition', data=data)
+plt.show()
+
+# Visualize relationships between variables
+sns.pairplot(data[['column1', 'column2', ...]])
+plt.show()
+
+
+#Statistical Analysis
+
+
+from scipy.stats import ttest_ind
+
+# Conduct hypothesis testing
+t_stat, p_val = ttest_ind(data['column1'], data['column2'])
+print(f'T-statistic: {t_stat:.2f}, p-value: {p_val:.2f}')
+
+
+#Predictive Modelling
+
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import train_test_split
+
+# Split data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(data.drop('target', axis=1), data['target'], test_size=0.2, random_state=42)
+
+# Train a random forest classifier
+rfc = RandomForestClassifier(n_estimators=100, random_state=42)
+rfc.fit(X_train, y_train)
+
+# Evaluate the model
+y_pred = rfc.predict(X_test)
+print(f'Accuracy: {accuracy_score(y_test, y_pred):.2f}')
+
+
+#Feature Importance and selection
+
+from sklearn.feature_selection import SelectFromModel
+
+# Select important features using recursive feature elimination
+selector = SelectFromModel(rfc, threshold=0.5)
+X_selected = selector.transform(X_train)
+
+print(f'Selected features: {X_selected.shape[1]}')
+
+#Patient Segmentation
+
+from sklearn.cluster import KMeans
+
+# Apply k-means clustering to segment patients
+kmeans = KMeans(n_clusters=5, random_state=42)
+patient_segments = kmeans.fit_predict(data[['column1', 'column2', ...]])
+
+print(f'Patient segments: {patient_segments.shape[0]}')
+
+
+
+#Data Visualization and Reporting
+
+import plotly.graph_objects as go
+
+# Create an interactive visualization using Plotly
+fig = go.Figure(data=[go.Bar(x=data['column1'], y=data['column2'])])
+fig.update_layout(title='Medical Data Analysis')
+fig.show()
