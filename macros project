@@ -1,0 +1,22 @@
+Sub AutoPopulateInvoiceTemplate()
+    Dim ws As Worksheet
+    Dim invoiceTemplate As Worksheet
+    Dim clientData As Range
+    Dim projectData As Range
+    Dim billableHours As Double
+    
+    ' Set up worksheets and ranges
+    Set ws = ThisWorkbook.Worksheets("Invoices")
+    Set invoiceTemplate = ThisWorkbook.Worksheets("Invoice Template")
+    Set clientData = ThisWorkbook.Worksheets("Client Database").Range("A:D")
+    Set projectData = ThisWorkbook.Worksheets("Project Database").Range("A:E")
+    
+    ' Get billable hours
+    billableHours = Application.WorksheetFunction.SumIfs(ThisWorkbook.Worksheets("Time Tracking").Range("E:E"), ThisWorkbook.Worksheets("Time Tracking").Range("B:B"), ws.Range("B2").Value)
+    
+    ' Populate invoice template
+    invoiceTemplate.Range("A2").Value = clientData.Columns(2).Find(ws.Range("B2").Value).Offset(0, 1).Value
+    invoiceTemplate.Range("B2").Value = projectData.Columns(2).Find(ws.Range("B2").Value).Offset(0, 1).Value
+    invoiceTemplate.Range("C2").Value = billableHours
+    invoiceTemplate.Range("D2").Value = billableHours * clientData.Columns(4).Find(ws.Range("B2").Value).Offset(0, 1).Value
+End Sub
