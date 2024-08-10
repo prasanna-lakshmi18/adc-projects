@@ -1,0 +1,40 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+def read_pixel_data(file_name):
+    """
+    Read pixel values from an input file representing a grayscale image.
+    The input file should contain pixel values arranged in rows and columns.
+    """
+    with open(file_name, 'r') as f:
+        pixel_data = [list(map(int, line.split())) for line in f.readlines()]
+    return np.array(pixel_data)
+
+def reconstruct_image(pixel_data):
+    """
+    Use NumPy to reconstruct the digital image from the pixel data.
+    Convert the pixel values into a 2D NumPy array representing the image.
+    """
+    return pixel_data
+
+def visualize_image(image):
+    """
+    Utilize Matplotlib to visualize the reconstructed image.
+    Display the reconstructed image in grayscale using appropriate color mapping.
+    """
+    plt.imshow(image, cmap='gray')
+    plt.show()
+
+def main():
+    # Read pixel data from input file
+    file_name = 'input.txt'  # Replace with your input file name
+    pixel_data = read_pixel_data(file_name)
+
+    # Reconstruct the digital image
+    image = reconstruct_image(pixel_data)
+
+    # Visualize the reconstructed image
+    visualize_image(image)
+
+if __name__ == '__main__':
+    main()
